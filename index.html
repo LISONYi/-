@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>作品集 | Portfolio</title>
+<style>
+/* ========== Reset & Variables ========== */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#09090b;--bg2:#131316;--bg3:#1a1a1f;--bg4:#222228;
+  --text:#f4f4f5;--text2:#a1a1aa;--text3:#71717a;
+  --accent:#d4a853;--accent2:#e8c171;--accent-dim:rgba(212,168,83,0.12);
+  --border:#27272a;--border2:#3f3f46;
+  --r:10px;--r2:6px;
+  --shadow:0 2px 16px rgba(0,0,0,.4);
+  --shadow2:0 8px 40px rgba(0,0,0,.5);
+  --ease:cubic-bezier(.4,0,.2,1);
+  --font-d:'Georgia','Noto Serif SC','Songti SC',serif;
+  --font-b:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Microsoft YaHei',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font-b);background:var(--bg);color:var(--text);min-height:100vh;line-height:1.6;-webkit-font-smoothing:antialiased}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--border2);border-radius:3px}
+
+/* ========== Header ========== */
+.hdr{position:sticky;top:0;z-index:100;background:rgba(9,9,11,.82);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:0 clamp(1rem,4vw,3rem)}
+.hdr-in{max-width:1320px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{font-family:var(--font-d);font-size:1.25rem;font-weight:700;color:var(--text);text-decoration:none;letter-spacing:.04em;cursor:pointer}
+.logo i{color:var(--accent);font-style:normal}
+.hdr-meta{font-size:.78rem;color:var(--text3);letter-spacing:.02em}
+
+/* ========== Breadcrumb ========== */
+.bc{max-width:1320px;margin:0 auto;padding:1rem clamp(1rem,4vw,3rem) 0;display:flex;align-items:center;gap:.45rem;font-size:.8rem;color:var(--text3);flex-wrap:wrap}
+.bc a{color:var(--text2);text-decoration:none;cursor:pointer;transition:color .25s var(--ease)}
+.bc a:hover{color:var(--accent)}
+.bc .sep{color:var(--border2)}
+.bc .cur{color:var(--text)}
+
+/* ========== Main ========== */
+.main{max-width:1320px;margin:0 auto;padding:1.8rem clamp(1rem,4vw,3rem) 3rem}
+.stitle{font-family:var(--font-d);font-size:clamp(1.2rem,3vw,1.5rem);font-weight:700;margin-bottom:.3rem}
+.sdesc{font-size:.82rem;color:var(--text3);margin-bottom:1.6rem}
+
+/* ========== Category Grid ========== */
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.2rem}
+
+/* ========== Card ========== */
+.card{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:all .35s var(--ease);position:relative}
+.card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:var(--shadow2)}
+.card .prev{width:100%;height:200px;overflow:hidden;position:relative;background:var(--bg2)}
+.card .prev img{width:100%;height:100%;object-fit:cover;transition:transform .6s var(--ease)}
+.card:hover .prev img{transform:scale(1.04)}
+.card .prev .ph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--bg2),var(--bg3));color:var(--text3);font-size:2.6rem}
+.card .prev .ph span{font-size:.78rem;margin-top:.4rem;color:var(--text3)}
+.card .prev .badge{position:absolute;top:10px;right:10px;background:rgba(0,0,0,.65);backdrop-filter:blur(6px);color:var(--text);font-size:.7rem;padding:3px 9px;border-radius:20px;border:1px solid var(--border)}
+.card .info{padding:.85rem 1rem}
+.card .info h3{font-family:var(--font-d);font-size:1rem;font-weight:600;color:var(--text);margin-bottom:.15rem}
+.card .info p{font-size:.75rem;color:var(--text3)}
+
+/* ========== File Grid ========== */
+.fgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.9rem}
+.fc{background:var(--bg3);border:1px solid var(--border);border-radius:var(--r2);overflow:hidden;cursor:pointer;transition:all .3s var(--ease)}
+.fc:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:var(--shadow)}
+.fc .th{width:100%;height:170px;overflow:hidden;background:var(--bg2);display:flex;align-items:center;justify-content:center}
+.fc .th img{width:100%;height:100%;object-fit:cover;transition:transform .4s var(--ease)}
+.fc:hover .th img{transform:scale(1.04)}
+.fc .th .fi{font-size:2.6rem;display:flex;flex-direction:column;align-items:center;gap:.4rem;color:var(--text3)}
+.fc .th .fi .lb{font-size:.7rem;color:var(--text3)}
+.fc .fn{padding:.5rem .7rem;font-size:.75rem;color:var(--text2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ========== Lightbox ========== */
+.lb{position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,.95);display:none;align-items:center;justify-content:center;flex-direction:column}
+.lb.on{display:flex}
+.lb-close{position:absolute;top:.8rem;right:.8rem;width:40px;height:40px;border:1px solid rgba(255,255,255,.15);border-radius:50%;background:rgba(0,0,0,.4);color:#fff;font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s var(--ease);z-index:10}
+.lb-close:hover{border-color:var(--accent);color:var(--accent)}
+.lb-body{max-width:92vw;max-height:86vh;display:flex;align-items:center;justify-content:center}
+.lb-body img{max-width:92vw;max-height:86vh;object-fit:contain;border-radius:3px}
+.lb-body video{max-width:92vw;max-height:86vh;border-radius:3px}
+.lb-body iframe{width:88vw;height:84vh;border:none;border-radius:6px;background:#fff}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border:1px solid rgba(255,255,255,.15);border-radius:50%;background:rgba(0,0,0,.4);color:#fff;font-size:1.2rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s var(--ease);z-index:10}
+.lb-nav:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,0,0,.6)}
+.lb-nav.prv{left:.8rem}
+.lb-nav.nxt{right:.8rem}
+.lb-cap{position:absolute;bottom:1.2rem;left:50%;transform:translateX(-50%);color:var(--text2);font-size:.8rem;max-width:80vw;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.lb-ctr{position:absolute;top:1rem;left:50%;transform:translateX(-50%);color:var(--text3);font-size:.75rem}
+
+/* ========== Modal (PDF) ========== */
+.mdl{position:fixed;inset:0;z-index:1500;background:rgba(0,0,0,.92);display:none;flex-direction:column}
+.mdl.on{display:flex}
+.mdl-hdr{display:flex;align-items:center;justify-content:space-between;padding:.8rem 1.5rem;background:rgba(19,19,22,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);flex-shrink:0}
+.mdl-hdr h2{font-family:var(--font-d);font-size:1.05rem;color:var(--text)}
+.mdl-cls{width:34px;height:34px;border:1px solid var(--border);border-radius:50%;background:transparent;color:var(--text2);font-size:1.15rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .25s var(--ease)}
+.mdl-cls:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.mdl-body{flex:1;overflow:hidden;padding:1rem;display:flex;justify-content:center}
+.mdl-body iframe{width:100%;height:100%;border:none;border-radius:6px;background:#fff}
+
+/* ========== Empty ========== */
+.empty{text-align:center;padding:4rem 2rem;color:var(--text3)}
+.empty .ic{font-size:2.8rem;margin-bottom:.8rem;opacity:.4}
+
+/* ========== Footer ========== */
+.ftr{text-align:center;padding:2.5rem 2rem;color:var(--text3);font-size:.75rem;border-top:1px solid var(--border);margin-top:2rem}
+
+/* ========== Responsive ========== */
+@media(max-width:768px){
+  .hdr-in{height:52px}.logo{font-size:1.05rem}.hdr-meta{display:none}
+  .bc{padding:.8rem 1rem 0}
+  .main{padding:1.2rem 1rem 2rem}
+  .cat-grid{grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.9rem}
+  .card .prev{height:160px}
+  .fgrid{grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:.6rem}
+  .fc .th{height:130px}
+  .lb-nav{width:38px;height:38px;font-size:1rem}
+  .lb-nav.prv{left:.4rem}.lb-nav.nxt{right:.4rem}
+}
+@media(max-width:480px){
+  .cat-grid{grid-template-columns:1fr 1fr;gap:.7rem}
+  .card .prev{height:130px}
+  .fgrid{grid-template-columns:repeat(2,1fr)}
+  .fc .th{height:110px}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <a class="logo" onclick="goHome()">Portfolio<i>.</i></a>
+    <div class="hdr-meta" id="hdrMeta"></div>
+  </div>
+</header>
+
+<nav class="bc" id="bc"></nav>
+
+<main class="main" id="app"></main>
+
+<div class="lb" id="lb">
+  <button class="lb-close" onclick="closeLb()">&times;</button>
+  <div class="lb-ctr" id="lbCtr"></div>
+  <button class="lb-nav prv" onclick="navLb(-1)">&#8249;</button>
+  <div class="lb-body" id="lbBody"></div>
+  <button class="lb-nav nxt" onclick="navLb(1)">&#8250;</button>
+  <div class="lb-cap" id="lbCap"></div>
+</div>
+
+<div class="mdl" id="mdl">
+  <div class="mdl-hdr">
+    <h2 id="mdlTitle"></h2>
+    <button class="mdl-cls" onclick="closeMdl()">&times;</button>
+  </div>
+  <div class="mdl-body"><iframe id="mdlFrame"></iframe></div>
+</div>
+
+<script>
+// ========== Data (auto-generated) ==========
+const DATA = [{"name":"海报","type":"folder","path":"海报","children":[{"name":"冰淇淋.jpg","type":"image","path":"海报/冰淇淋.jpg"},{"name":"布达拉宫.png","type":"image","path":"海报/布达拉宫.png"},{"name":"茶颜悦色.png","type":"image","path":"海报/茶颜悦色.png"},{"name":"电商促销 Banner.pdf","type":"pdf","path":"海报/电商促销 Banner.pdf"},{"name":"花朝节手绘.pdf","type":"pdf","path":"海报/花朝节手绘.pdf"},{"name":"人像.png","type":"image","path":"海报/人像.png"},{"name":"豚骨拉面.png","type":"image","path":"海报/豚骨拉面.png"},{"name":"预见源头、.png","type":"image","path":"海报/预见源头、.png"}]},{"name":"画册","type":"folder","path":"画册","children":[{"name":"敦煌壁画","type":"folder","path":"画册/敦煌壁画","children":[{"name":"画板 1_1.png","type":"image","path":"画册/敦煌壁画/画板 1_1.png"},{"name":"画板 1_2.png","type":"image","path":"画册/敦煌壁画/画板 1_2.png"},{"name":"画板 1_3.png","type":"image","path":"画册/敦煌壁画/画板 1_3.png"},{"name":"画板 1_4.png","type":"image","path":"画册/敦煌壁画/画板 1_4.png"},{"name":"画板 1_5.png","type":"image","path":"画册/敦煌壁画/画板 1_5.png"},{"name":"画板 1_6.png","type":"image","path":"画册/敦煌壁画/画板 1_6.png"},{"name":"画板 1_7.png","type":"image","path":"画册/敦煌壁画/画板 1_7.png"},{"name":"画板 1_8.png","type":"image","path":"画册/敦煌壁画/画板 1_8.png"},{"name":"画板 1_9.png","type":"image","path":"画册/敦煌壁画/画板 1_9.png"},{"name":"画板 1.png","type":"image","path":"画册/敦煌壁画/画板 1.png"},{"name":"画板 11.png","type":"image","path":"画册/敦煌壁画/画板 11.png"},{"name":"画板 12.png","type":"image","path":"画册/敦煌壁画/画板 12.png"}]}]},{"name":"LOGO设计","type":"folder","path":"LOGO设计","children":[{"name":"电气与电子校友会.pdf","type":"pdf","path":"LOGO设计/电气与电子校友会.pdf"}]},{"name":"UI设计","type":"folder","path":"UI设计","children":[{"name":"关东泥韵.pdf","type":"pdf","path":"UI设计/关东泥韵.pdf"},{"name":"伞韵风华.pdf","type":"pdf","path":"UI设计/伞韵风华.pdf"}]},{"name":"VI手册","type":"folder","path":"VI手册","children":[{"name":"伞韵风华.pdf","type":"pdf","path":"VI手册/伞韵风华.pdf"}]},{"name":"简历.pdf","type":"pdf","path":"简历.pdf"}];
+const BASE = '作品集';
+let nav = [];
+let lbFiles = [], lbIdx = 0;
+
+// ========== Helpers ==========
+function esc(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML}
+function firstImg(items){for(const i of items){if(i.type==='image')return i.path;if(i.type==='folder'&&i.children){const f=firstImg(i.children);if(f)return f}}return null}
+function cntFiles(items){let c=0;for(const i of items){if(i.type==='folder')c+=cntFiles(i.children);else c++}return c}
+function typeSum(items){const c={image:0,pdf:0,video:0,folder:0};for(const i of items){if(i.type==='folder')c.folder++;else if(c[i.type]!==undefined)c[i.type]++}const p=[];if(c.image)p.push(c.image+' 张图片');if(c.pdf)p.push(c.pdf+' 个 PDF');if(c.video)p.push(c.video+' 个视频');if(c.folder)p.push(c.folder+' 个子项目');return p.join(' · ')||'空'}
+
+// ========== Render Home ==========
+function goHome(){
+  nav=[];
+  updateBc();
+  const cats=DATA.filter(i=>i.type==='folder');
+  const files=DATA.filter(i=>i.type!=='folder');
+  let h='';
+  if(cats.length){
+    h+='<h1 class="stitle">作品分类</h1><p class="sdesc">点击分类查看作品详情</p><div class="cat-grid">';
+    cats.forEach(c=>{
+      const prev=firstImg(c.children);
+      const cnt=cntFiles(c.children);
+      h+='<div class="card" onclick="openCat(\''+c.path+'\',\''+esc(c.name)+'\')">';
+      h+='<div class="prev">';
+      if(prev) h+='<img src="'+BASE+'/'+esc(prev)+'" alt="'+esc(c.name)+'" loading="lazy">';
+      else h+='<div class="ph">📁<span>'+esc(c.name)+'</span></div>';
+      h+='<div class="badge">'+cnt+' 项</div></div>';
+      h+='<div class="info"><h3>'+esc(c.name)+'</h3><p>'+typeSum(c.children)+'</p></div></div>';
+    });
+    h+='</div>';
+  }
+  if(files.length){
+    h+='<h1 class="stitle" style="margin-top:2rem">其他文件</h1><p class="sdesc">未分类的作品</p><div class="fgrid">';
+    files.forEach(f=>{h+=fileCardHtml(f)});
+    h+='</div>';
+  }
+  if(!cats.length&&!files.length) h='<div class="empty"><div class="ic">📂</div><p>暂无作品</p></div>';
+  document.getElementById('app').innerHTML=h;
+  document.getElementById('hdrMeta').textContent=TOTAL_CATEGORIES+' 个分类 · '+TOTAL_FILES+' 项作品';
+}
+
+// ========== Open Category ==========
+function openCat(catPath,catName){
+  const cat=DATA.find(i=>i.path===catPath);
+  if(!cat)return;
+  nav=[{name:catName,path:catPath}];
+  updateBc();
+  renderItems(cat.children,catName);
+}
+
+// ========== Render Items ==========
+function renderItems(items,title){
+  const cats=items.filter(i=>i.type==='folder');
+  const files=items.filter(i=>i.type!=='folder');
+  let h='';
+  if(cats.length){
+    h+='<div class="cat-grid" style="margin-bottom:1.8rem">';
+    cats.forEach(c=>{
+      const prev=firstImg(c.children);
+      const cnt=cntFiles(c.children);
+      h+='<div class="card" onclick="openSub(\''+c.path+'\',\''+esc(c.name)+'\')">';
+      h+='<div class="prev">';
+      if(prev) h+='<img src="'+BASE+'/'+esc(prev)+'" alt="'+esc(c.name)+'" loading="lazy">';
+      else h+='<div class="ph">📁<span>'+esc(c.name)+'</span></div>';
+      h+='<div class="badge">'+cnt+' 项</div></div>';
+      h+='<div class="info"><h3>'+esc(c.name)+'</h3><p>'+typeSum(c.children)+'</p></div></div>';
+    });
+    h+='</div>';
+  }
+  if(files.length){
+    if(cats.length){h+='<h2 class="stitle">文件列表</h2><p class="sdesc">点击预览</p>'}
+    h+='<div class="fgrid">';
+    files.forEach(f=>{h+=fileCardHtml(f)});
+    h+='</div>';
+  }
+  if(!cats.length&&!files.length) h='<div class="empty"><div class="ic">📂</div><p>此文件夹为空</p></div>';
+  document.getElementById('app').innerHTML=h;
+}
+
+// ========== Open Sub-folder ==========
+function openSub(subPath,subName){
+  // Find in current nav context
+  let parent=DATA;
+  for(const n of nav){
+    const found=parent.find(i=>i.path===n.path);
+    if(found&&found.children)parent=found.children;
+  }
+  const sub=parent.find(i=>i.path===subPath);
+  if(!sub)return;
+  nav.push({name:subName,path:subPath});
+  updateBc();
+  renderItems(sub.children,subName);
+}
+
+// ========== File Card HTML ==========
+function fileCardHtml(f){
+  let th='';
+  if(f.type==='image') th='<img src="'+BASE+'/'+esc(f.path)+'" alt="'+esc(f.name)+'" loading="lazy">';
+  else if(f.type==='video') th='<div class="fi">🎬<span class="lb">视频</span></div>';
+  else if(f.type==='pdf') th='<div class="fi">📄<span class="lb">PDF</span></div>';
+  else th='<div class="fi">📁<span class="lb">文件</span></div>';
+  return '<div class="fc" onclick="preview('+JSON.stringify(f).replace(/"/g,'&quot;')+')"><div class="th">'+th+'</div><div class="fn" title="'+esc(f.name)+'">'+esc(f.name)+'</div></div>';
+}
+
+// ========== Preview ==========
+function preview(f){
+  if(f.type==='image'){
+    // Collect sibling images for navigation
+    const cards=document.querySelectorAll('.fc');
+    lbFiles=[];
+    cards.forEach(c=>{
+      const name=c.querySelector('.fn')?.textContent;
+      const imgs=c.querySelectorAll('.th img');
+      if(imgs.length&&name) lbFiles.push({name,path:imgs[0].src.replace(location.origin+'/',''),type:'image'});
+    });
+    lbIdx=lbFiles.findIndex(i=>i.name===f.name);
+    if(lbIdx===-1)lbIdx=0;
+    openLb();
+  } else if(f.type==='video'){
+    lbFiles=[{...f,path:BASE+'/'+f.path}];lbIdx=0;openLb();
+  } else if(f.type==='pdf'){
+    openMdl(f);
+  }
+}
+
+// ========== Lightbox ==========
+function openLb(){
+  const el=document.getElementById('lb');
+  el.classList.add('on');
+  renderLb();
+  document.body.style.overflow='hidden';
+}
+function closeLb(){
+  document.getElementById('lb').classList.remove('on');
+  document.getElementById('lbBody').innerHTML='';
+  document.body.style.overflow='';
+}
+function renderLb(){
+  const f=lbFiles[lbIdx];if(!f)return;
+  const body=document.getElementById('lbBody');
+  if(f.type==='image') body.innerHTML='<img src="'+esc(f.path)+'" alt="'+esc(f.name)+'">';
+  else if(f.type==='video') body.innerHTML='<video src="'+esc(f.path)+'" controls autoplay></video>';
+  document.getElementById('lbCtr').textContent=lbFiles.length>1?(lbIdx+1)+' / '+lbFiles.length:'';
+  document.getElementById('lbCap').textContent=f.name;
+  document.querySelectorAll('.lb-nav').forEach(b=>b.style.display=lbFiles.length>1?'flex':'none');
+}
+function navLb(d){lbIdx=(lbIdx+d+lbFiles.length)%lbFiles.length;renderLb()}
+
+// ========== Modal (PDF) ==========
+function openMdl(f){
+  document.getElementById('mdlTitle').textContent=f.name;
+  document.getElementById('mdlFrame').src=BASE+'/'+esc(f.path);
+  document.getElementById('mdl').classList.add('on');
+  document.body.style.overflow='hidden';
+}
+function closeMdl(){
+  document.getElementById('mdl').classList.remove('on');
+  document.getElementById('mdlFrame').src='';
+  document.body.style.overflow='';
+}
+
+// ========== Breadcrumb ==========
+function updateBc(){
+  let h='<a onclick="goHome()">首页</a>';
+  nav.forEach((n,i)=>{
+    h+='<span class="sep">/</span>';
+    if(i===nav.length-1) h+='<span class="cur">'+esc(n.name)+'</span>';
+    else h+='<a onclick="jumpTo('+i+')">'+esc(n.name)+'</a>';
+  });
+  document.getElementById('bc').innerHTML=h;
+}
+function jumpTo(idx){
+  const target=nav[idx];
+  nav=nav.slice(0,idx+1);
+  const cat=DATA.find(i=>i.path===target.path);
+  if(cat){renderItems(cat.children,target.name);updateBc();return}
+  // Try nested
+  let parent=DATA;
+  for(let i=0;i<idx;i++){
+    const found=parent.find(j=>j.path===nav[i].path);
+    if(found&&found.children)parent=found.children;
+  }
+  const sub=parent.find(i=>i.path===target.path);
+  if(sub){renderItems(sub.children,target.name);updateBc()}
+}
+
+// ========== Keyboard ==========
+document.addEventListener('keydown',e=>{
+  if(document.getElementById('lb').classList.contains('on')){
+    if(e.key==='Escape')closeLb();
+    if(e.key==='ArrowLeft')navLb(-1);
+    if(e.key==='ArrowRight')navLb(1);
+  } else if(document.getElementById('mdl').classList.contains('on')){
+    if(e.key==='Escape')closeMdl();
+  }
+});
+
+// ========== Init ==========
+goHome();
+</script>
+</body>
+</html>
